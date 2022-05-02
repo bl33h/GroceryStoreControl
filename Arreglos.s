@@ -10,3 +10,21 @@
 * de productos, cantidad de existencias y el
 * costo unitario.
  ----------------------------------------------- */
+
+ /*--- Inicio ---*/
+    @@ codigo de assembler: se coloca en la seccion .text
+.text
+.align 2
+    @@ etiqueta "main" llama a la funcion global
+.global main
+.type main, %function
+main:
+    @@ grabar registro de enlace en la pila
+stmfd sp!, {lr}
+/*impresion de menu y pide comando*/
+Menu:
+    ldr r0,=menu
+    bl puts
+    ldr r0,=opcion
+    ldr r1,=comando
+    bl scanf
