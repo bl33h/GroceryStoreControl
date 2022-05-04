@@ -24,7 +24,6 @@ stmfd sp!, {lr}
 
 /*------------------------------------ Menu ------------------------------------*/
 /*impresion de menu y pide comando*/
-mov r10,#2
 Menu:
     ldr r0,=menu
     bl puts
@@ -47,23 +46,6 @@ comp:
  /*------------------------------------ Inputs ------------------------------------*/
 ejecucion:
 
-nombreCliente:
-    @Nombre
-    ldr r0,=ingresoN
-    bl puts
-    ldr r0,=entrada
-    ldr r1,=n
-    ldr r4,=n
-    bl scanf
-    
-    @Apellido
-    ldr r0,=ingresoA
-    bl puts
-    ldr r0,=entrada
-    ldr r1,=a
-    ldr r5,=a
-    bl scanf
-
     @Num producto
     ldr r0,=ingresoP
     bl puts
@@ -71,19 +53,26 @@ nombreCliente:
     ldr r1,=num_producto
     ldr r6,=num_producto
     bl scanf
+    cmp r4, #'c' @@comando de compra
+    beq Menu
 
  /*------------------------------------ Metodos ------------------------------------*/
-
-/*Total*/
-total:
-    ldr r1,=n
-    ldr r1,[r1]
-    ldr r0,=nombre_impresion
-    bl puts
 
 /*--- Comando de salida del menu ---*/
 /* si pone q sale*/
 recibo:
+    @Nombre
+    ldr r0,=ingresoN
+    bl puts
+    ldr r0,=entrada
+    ldr r3,=n
+    mov r1,r3
+    bl scanf
+    
+    ldr r0,=nombre_impresion
+    ldr r1,=n
+    bl printf
+
 ldr r0,=adios
 bl puts
 mov r0, #0
@@ -129,13 +118,11 @@ totalapagar: .word 0
 menu:
     .asciz "-------------- Bienvenido al Supermercado De Confianza ツ --------------\nA continuacion seleccione la accion que desea realizar. \n\n----- COMANDOS -----\n(c) Realizar una compra de nuestros excelentes productos\n(r) Obtener un recibo de su compra" @@bienvenida
 nombre_impresion: 
-    .asciz "Cliente: %s"
+    .asciz "Cliente: %s\n"
 opcion:
     .asciz " %c"
 ingresoN:
-    .asciz "Ingrese su nombre: "
-ingresoA:
-   .asciz "Ingrese su apellido: "
+    .asciz "Ingrese el nombre al que se desea facturar: "
 comando:
     .byte 0
 entrada:
@@ -145,6 +132,6 @@ entrada_num:
 ingresoP:
     .asciz "Ingrese el numero correspondiente al producto que desea adquirir del listado:\n\n------- LISTADO -------\n(1.) Leche\n(2.) P. Galletas\n(3.) Mantequilla\n(4.) Queso\n(5.) Uni. Pan\n(6.) Jalea\n(7.) Uni. Yogurt\n(8.) Lb. Manzana"
 ingresoC:
-    .asciz "Ingrese la cantidad que desea cokmprar del producto: "
+    .asciz "Ingrese la cantidad que desea comprar del producto: "
 adios:
     .asciz "Hasta pronto, gracias por su preferencia"
